@@ -1,5 +1,8 @@
 import unittest
 
+maxX = 99
+maxY = 99
+
 class TestBn(unittest.TestCase):
     # Test de base, instanciation classe
     def testbnBase(self):
@@ -26,11 +29,15 @@ class TestBn(unittest.TestCase):
         self.assertEqual(99, len(grille))
 
 class  batailleNavale():
+
+    
     def __init__(self):
         pass
 
     # Intialise une grille de taille x par y remplie de 0
     def  createGrille(self, x, y):
+        if x > maxX: x = maxX
+        if y > maxY: y = maxY
         self._grille = [[0] * x for _ in range(y)]
 
     def grille(self):
