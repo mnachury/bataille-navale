@@ -53,7 +53,7 @@ class  batailleNavale():
     def __init__(self):
         pass
 
-    # Intialise une grille de taille x par y remplie de 0
+    # Intialise une grille de taille x par y remplie de 0 premiere modif
     def  createGrille(self, x, y):
         if x > maxX: x = maxX
         if y > maxY: y = maxY
