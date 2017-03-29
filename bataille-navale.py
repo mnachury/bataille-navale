@@ -12,10 +12,13 @@ class TestBn(unittest.TestCase):
                 self.assertEqual(0, cel)
 
 class  batailleNavale():
+    _maxX = 99
+    _maxY = 99
+    
     def __init__(self):
         pass
 
-    #Intialise une grille de taille x par y remplie de 0 test2
+    #Intialise une grille de taille x par y remplie de 0
     def  createGrille(self, x, y):
         self._grille = [[0] * x for _ in range(y)]
 
