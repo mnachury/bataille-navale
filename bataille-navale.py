@@ -59,7 +59,6 @@ class TestBn(unittest.TestCase):
 
 class  batailleNavale():
 
-
     def __init__(self):
         pass
 
@@ -74,4 +73,5 @@ class  batailleNavale():
     def grille(self):
         return self._grille
 
-unittest.main()
+if __name__ == '__main__':
+    unittest.main()
