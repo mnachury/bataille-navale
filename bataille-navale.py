@@ -25,10 +25,10 @@ class TestBn(unittest.TestCase):
     # Test grille trop grande (maximum 100)
     def testTooBigGrille(self):
         bn = batailleNavale()
-        bn.createGrille(101, 101)
+        bn.createGrille(500, 101)
         grille = bn.grille()
         self.assertNotEqual(101, len(grille))
-        self.assertEqual(100, len(grille))
+        self.assertEqual(99, len(grille))
 
 class  batailleNavale():
 
