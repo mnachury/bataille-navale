@@ -2,6 +2,8 @@ import unittest
 
 maxX = 99
 maxY = 99
+minX = 5
+minY = 5
 
 class TestBn(unittest.TestCase):
     # Test de base, instanciation classe
@@ -57,6 +59,8 @@ class  batailleNavale():
     def  createGrille(self, x, y):
         if x > maxX: x = maxX
         if y > maxY: y = maxY
+        if x < minX: x = minX
+        if y < minY: y = minY
         self._grille = [[0] * x for _ in range(y)]
 
     def grille(self):
