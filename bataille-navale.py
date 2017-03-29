@@ -7,8 +7,8 @@ class TestBn(unittest.TestCase):
     def testCreateGrille(self):
         bn = batailleNavale()
         bn.createGrille(10, 50)
-        for row in bn.grille
-            for cel in row
+        for row in bn.grille() :
+            for cel in row:
                 assertEqual(0, cel)
 
 class  batailleNavale():
