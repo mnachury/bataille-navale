@@ -62,9 +62,11 @@ class TestBn(unittest.TestCase):
 class  batailleNavale():
 
     def __init__(self):
-        pass
+        self._bateaux = []
 
-    # Intialise une grille de taille x par y remplie de 0 premiere modif
+    # Fonction grille
+
+    # Intialise une grille de taille x par y remplie de 0
     def  createGrille(self, x, y):
         if x > maxX: x = maxX
         if y > maxY: y = maxY
@@ -74,6 +76,15 @@ class  batailleNavale():
 
     def grille(self):
         return self._grille
+
+    # Fonction bateaux
+
+    def createBateau(self,x,y,z):
+        self._bateaux.append({x,y,z})
+        return len(self._bateaux-1)
+
+    def bateau(self,i):
+        return self._bateaux(i)
 
 if __name__ == '__main__':
     unittest.main()
