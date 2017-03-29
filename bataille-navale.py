@@ -48,7 +48,6 @@ class TestBn(unittest.TestCase):
             for cel in row:
                 self.assertEqual(0, cel)
 
-
 class  batailleNavale():
 
     def __init__(self):
