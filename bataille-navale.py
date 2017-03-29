@@ -48,6 +48,14 @@ class TestBn(unittest.TestCase):
             for cel in row:
                 self.assertEqual(0, cel)
 
+    # Test grille valeur négative
+    def testNegativeGrille(self):
+        bn = batailleNavale()
+        bn.createGrille(103, -12)
+        grille = bn.grille()
+        self.assertNotEqual(-12, len(grille))
+        self.assertEqual(minY, len(grille))
+
 
 class  batailleNavale():
 
