@@ -26,11 +26,30 @@ class TestBn(unittest.TestCase):
         bn.createGrille(500, 101)
         grille = bn.grille()
         self.assertNotEqual(101, len(grille))
-        self.assertEqual(99, len(grille))
+        self.assertEqual(maxY, len(grille))
+        for row in grille:
+            self.assertNotEqual(500, len(row))
+            self.assertEqual(maxX, len(row))
+            for cel in row:
+                self.assertEqual(0, cel)
+
+    # Test grille trop petite (minimum 5)
+    def testTooSmallGrille(self):
+        bn = batailleNavale()
+        bn.createGrille(3, 2)
+        grille = bn.grille()
+        self.assertNotEqual(2, len(grille))
+        self.assertEqual(minY, len(grille))
+        for row in grille:
+            self.assertNotEqual(3, len(row))
+            self.assertEqual(minX, len(row))
+            for cel in row:
+                self.assertEqual(0, cel)
+
 
 class  batailleNavale():
 
-    
+
     def __init__(self):
         pass
 
