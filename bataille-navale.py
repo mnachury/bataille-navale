@@ -7,12 +7,12 @@ minY = 5
 
 class TestBn(unittest.TestCase):
     # Test de base, instanciation classe
-    def testbnBase(self):
+    def test_bnBase(self):
         bn = batailleNavale()
         self.assertIsNot(None, bn)
 
     # Test d'initialisation d'une grille vide
-    def testCreateGrille(self):
+    def test_CreateGrille(self):
         bn = batailleNavale()
         bn.createGrille(10, 50)
         grille = bn.grille()
@@ -23,7 +23,7 @@ class TestBn(unittest.TestCase):
                 self.assertEqual(0, cel)
 
     # Test grille trop grande (maximum 100)
-    def testTooBigGrille(self):
+    def test_TooBigGrille(self):
         bn = batailleNavale()
         bn.createGrille(500, 101)
         grille = bn.grille()
@@ -36,7 +36,7 @@ class TestBn(unittest.TestCase):
                 self.assertEqual(0, cel)
 
     # Test grille trop petite (minimum 5)
-    def testTooSmallGrille(self):
+    def test_TooSmallGrille(self):
         bn = batailleNavale()
         bn.createGrille(3, 2)
         grille = bn.grille()
