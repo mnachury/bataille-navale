@@ -59,7 +59,7 @@ class TestBn(unittest.TestCase):
     # Test initialisation type bateau
     def test_CreateTypeBateau(self):
         bn = batailleNavale(10, 10)
-        i = bn.createTypeBateau(5, 1)
+        i = bn.createTypeBateau(5, 1, 1)
         typeBateau = bn.typeBateau(i)
         self.assertEqual(5, typeBateau[0])
         self.assertEqual(1, typeBateau[1])
@@ -67,7 +67,7 @@ class TestBn(unittest.TestCase):
     # Test initialisation bateau
     def test_CreateBateau(self):
         bn = batailleNavale(10, 10)
-        i = bn.createTypeBateau(1, 4)
+        i = bn.createTypeBateau(1, 4, 1)
         idBateau = bn.createBateau(0, 0, i)
         bateau = bn.bateau(idBateau)
         self.assertEqual(0, bateau[0])
@@ -77,19 +77,19 @@ class TestBn(unittest.TestCase):
     # Test bateau trop grand
     def test_TooBigBateau(self):
         bn = batailleNavale(10, 10)
-        i = bn.createTypeBateau(11, 6)
+        i = bn.createTypeBateau(11, 6, 1)
         self.assertIsNone(i)
 
     # Test bateau avec dimensions négatives
     def test_NegativeBateau(self):
         bn = batailleNavale(10, 10)
-        i = bn.createTypeBateau(-1000, -12)
+        i = bn.createTypeBateau(-1000, -12, 1)
         self.assertIsNone(i)
 
     # Test positionnement invalide
     def test_InvalidePlaceBateau(self):
         bn = batailleNavale(10, 10)
-        i = bn.createTypeBateau(4, 1)
+        i = bn.createTypeBateau(4, 1, 1)
         idBateau = bn.createBateau(8, 8, i)
         self.assertIsNone(idBateau)
 
@@ -97,7 +97,7 @@ class TestBn(unittest.TestCase):
     def test_ValidPlaceBateau1(self):
         bn = batailleNavale(15, 15)
         grille = bn.grille()
-        i = bn.createTypeBateau(4, 1)
+        i = bn.createTypeBateau(4, 1, 1)
         bn.createBateau(2, 2, i)
         row = grille[2]
         for j in range(2, 5):
@@ -107,7 +107,7 @@ class TestBn(unittest.TestCase):
     def test_ValidPlaceBateau2(self):
         bn = batailleNavale(15, 15)
         grille = bn.grille()
-        i = bn.createTypeBateau(4, 8)
+        i = bn.createTypeBateau(4, 8, 1)
         idBateau = bn.createBateau(2, 2, i)
         for k in range(2, 10):
             row = grille[k]
@@ -129,13 +129,11 @@ class TestBn(unittest.TestCase):
         [0, 0, 0, 0, 0, 0, 6, 6, 6, 0],
         [0, 0, 0, 0, 0, 0, 6, 6, 6, 0]
         ]
-        tb1 = bn.createTypeBateau(3, 3)
-        tb2 = bn.createTypeBateau(2, 8)
-        tb3 = bn.createTypeBateau(1, 2)
-        tb4 = bn.createTypeBateau(3, 2)
-        tb5 = bn.createTypeBateau(3, 1)
-        #tb6 = bn.createTypeBateau(3, 2)
-        #tb7 = bn.createTypeBateau(1, 2)
+        tb1 = bn.createTypeBateau(3, 3, 1)
+        tb2 = bn.createTypeBateau(2, 8, 1)
+        tb3 = bn.createTypeBateau(1, 2, 2)
+        tb4 = bn.createTypeBateau(3, 2, 2)
+        tb5 = bn.createTypeBateau(3, 1, 1)
         bn.createBateau(1, 0, tb1)
         bn.createBateau(5, 0, tb2)
         bn.createBateau(9, 0, tb3)
@@ -144,13 +142,12 @@ class TestBn(unittest.TestCase):
         bn.createBateau(6, 8, tb4)
         bn.createBateau(2, 4, tb3)
         grille = bn.grille()
-        self.maxDiff = None
         self.assertEqual(grille, grilleTest)
 
     # Test de chevauchement bateaux
     def test_OverlapPlaceBateaux(self):
         bn = batailleNavale(10, 10)
-        i = bn.createTypeBateau(4, 8)
+        i = bn.createTypeBateau(4, 8, 2)
         b1 = bn.createBateau(2, 2, i)
         b2 = bn.createBateau(2, 2, i)
         self.assertIsNotNone(b1)
@@ -191,13 +188,13 @@ class batailleNavale():
             self._grille[0]) or x < 0 or y < 0:
             return None
         else:
-            self._bateaux.append([x, y, z])
             for iy in range(y, y + self._typeBateaux[z - 1][1]):
                 for ix in range(x, x + self._typeBateaux[z - 1][0]):
                     if self._grille[iy][ix] == 0:
-                        self._grille[iy][ix] = len(self._bateaux)
+                        self._grille[iy][ix] = z
                     else:
                         return None
+            self._bateaux.append([x, y, z])
             return len(self._bateaux)
 
     def bateau(self, i):
