@@ -86,8 +86,22 @@ class TestBn(unittest.TestCase):
         i = bn.createTypeBateau(-1000, -12)
         self.assertIsNone(i)
 
-    # Test types bateaux invalide (positionnement impossible)
-    # test enlevé car l'erreur est au niveau de la creation des bateaux
+    # Test positionnement bateau
+    def test_PlaceBateau(self):
+        bn = batailleNavale(15, 15)
+        grille = bn.grille()
+        i = bn.createTypeBateau(4, 1)
+        bn.createBateau(0, 0, i)
+        row = grille[0]
+        for j in range(0, 3):
+            self.assertEqual(row[j], i)
+
+    # Test positionnement bateau négatif
+    def test_NegativePlaceBateau(self):
+        bn = batailleNavale(10, 10)
+        i = bn.createTypeBateau(4, 1)
+        idBateau = bn.createBateau(-5, 0, i)
+        self.assertIsNone(idBateau)
 
 
 class batailleNavale():
