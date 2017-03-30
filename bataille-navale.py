@@ -94,14 +94,15 @@ class batailleNavale():
 
     def createTypeBateau(self, x, y):
         self._typeBateaux.append({x, y})
-        return len(self._bateaux - 1)
+        # return 1 pour 1 bateaux (même si id 0)
+        return len(self._bateaux)
 
     def createBateau(self, x, y, z):
-        self._typeBateaux.append({x, y, z})
-        return len(self._bateaux - 1)
+        self._typeBateaux.append({x, y, z - 1})
+        return len(self._bateaux)
 
     def bateau(self, i):
-        return self._bateaux(i)
+        return self._bateaux(i - 1)
 
 
 if __name__ == '__main__':
