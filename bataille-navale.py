@@ -93,14 +93,67 @@ class TestBn(unittest.TestCase):
         idBateau = bn.createBateau(8, 8, i)
         self.assertIsNone(idBateau)
 
-    def test_ValidPlaceBateau(self):
+    # Test de positionnement valide 1
+    def test_ValidPlaceBateau1(self):
         bn = batailleNavale(15, 15)
         grille = bn.grille()
         i = bn.createTypeBateau(4, 1)
-        idBateau = bn.createBateau(2, 2, i)
+        bn.createBateau(2, 2, i)
         row = grille[2]
         for j in range(2, 5):
             self.assertEqual(row[j], i)
+
+    # Test de positionnement valide 2
+    def test_ValidPlaceBateau2(self):
+        bn = batailleNavale(15, 15)
+        grille = bn.grille()
+        i = bn.createTypeBateau(4, 8)
+        idBateau = bn.createBateau(2, 2, i)
+        for k in range(2, 10):
+            row = grille[k]
+            for j in range(2, 5):
+                self.assertEqual(row[j], i)
+
+    # Test de postitionnement combiné
+    def test_ValidPlaceCombineBateau(self):
+        bn = batailleNavale(10, 10)
+        grilleTest = [
+        [0, 1, 1, 1, 0, 2, 2, 0, 0, 3],
+        [0, 1, 1, 1, 0, 2, 2, 0, 0, 3],
+        [0, 1, 1, 1, 0, 2, 2, 4, 4, 4],
+        [0, 0, 0, 0, 0, 2, 2, 4, 4, 4],
+        [0, 0, 7, 0, 0, 2, 2, 0, 0, 0],
+        [0, 0, 7, 0, 0, 2, 2, 0, 0, 0],
+        [0, 0, 0, 0, 0, 2, 2, 0, 0, 0],
+        [0, 5, 5, 5, 0, 2, 2, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 6, 6, 6, 0],
+        [0, 0, 0, 0, 0, 0, 6, 6, 6, 0]
+        ]
+        tb1 = bn.createTypeBateau(3, 3)
+        tb2 = bn.createTypeBateau(2, 8)
+        tb3 = bn.createTypeBateau(1, 2)
+        tb4 = bn.createTypeBateau(3, 2)
+        tb5 = bn.createTypeBateau(3, 1)
+        tb6 = bn.createTypeBateau(3, 2)
+        tb7 = bn.createTypeBateau(1, 2)
+        bn.createBateau(1, 0, tb1)
+        bn.createBateau(5, 0, tb2)
+        bn.createBateau(9, 0, tb3)
+        bn.createBateau(7, 2, tb4)
+        bn.createBateau(1, 7, tb5)
+        bn.createBateau(6, 8, tb6)
+        bn.createBateau(2, 4, tb7)
+        grille = bn.grille()
+        self.assertEqual(grille, grilleTest)
+
+    # Test de chevauchement bateaux
+    def test_OverlapPlaceBateaux(self):
+        bn = batailleNavale(10, 10)
+        i = bn.createTypeBateau(4, 8)
+        b1 = bn.createBateau(2, 2, i)
+        b2 = bn.createBateau(2, 2, i)
+        self.assertIsNotNone(b1)
+        self.assertIsNone(b2)
 
 
 class batailleNavale():
