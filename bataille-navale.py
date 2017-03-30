@@ -49,6 +49,17 @@ class TestBn(unittest.TestCase):
             for cel in row:
                 self.assertEqual(0, cel)
 
+    # Test grille négative
+    def test_NegativeGrille(self):
+        bn = batailleNavale()
+        bn.createGrille(-30, -12000)
+        grille = bn.grille()
+        self.assertNotEqual(-12000, len(grille))
+        self.assertEqual(minY, len(grille))
+        for row in grille:
+            self.assertNotEqual(-30, len(row))
+            self.assertEqual(minX, len(row))
+
     # Test initialisation type bateau
     def test_CreateTypeBateau(self):
         bn = batailleNavale()
@@ -66,6 +77,21 @@ class TestBn(unittest.TestCase):
         self.assertEqual(0, bateau[0])
         self.assertEqual(0, bateau[1])
         self.assertEqual(idBateau, bateau[2])
+
+    # Test bateau trop grand
+    def test_TooBigBateau(self):
+        bn = batailleNavale()
+        bn.createGrille(10, 10)
+        i = bn.createTypeBateau(1000, 1000)
+        typeBateau = bn.typeBateau(i)
+        self.assertIsNone(typeBateau)
+
+    # Test bateau invalide
+    def test_NegativeBateau(self):
+        bn = batailleNavale()
+        i = bn.createTypeBateau(-1000, -12)
+        typeBateau = bn.typeBateau(i)
+        self.assertIsNone(typeBateau)
 
 
 class batailleNavale():
