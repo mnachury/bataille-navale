@@ -201,15 +201,21 @@ class player():
     def grille(self):
         return self._grille
 
-    def createBateau(self, x, y, z):
-        if (x + self._typeBateaux[z - 1][0
-        ]) > len(self._grille) or (y + self._typeBateaux[z - 1][1]) > len(
+    def createBateau(self, x, y, idType):
+        btx = 0
+        for bateau in self._bateaux:
+            if bateau[2] == idType-1:
+                btx += 1
+        if btx > self._typeBateaux[idType-1][2]:
+            return None
+        if (x + self._typeBateaux[idType - 1][0
+        ]) > len(self._grille) or (y + self._typeBateaux[idType - 1][1]) > len(
             self._grille[0]) or x < 0 or y < 0:
             return None
         else:
-            self._bateaux.append([x, y, z])
-            for iy in range(y, y + self._typeBateaux[z - 1][1]):
-                for ix in range(x, x + self._typeBateaux[z - 1][0]):
+            self._bateaux.append([x, y, idType])
+            for iy in range(y, y + self._typeBateaux[idType - 1][1]):
+                for ix in range(x, x + self._typeBateaux[idType - 1][0]):
                     if self._grille[iy][ix] == 0:
                         self._grille[iy][ix] = len(self._bateaux)
                     else:
