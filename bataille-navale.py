@@ -9,7 +9,7 @@ minY = 5
 class TestBn(unittest.TestCase):
     # Test de base, instanciation classe
     def test_bnBase(self):
-        bn = batailleNavale(12,12)
+        bn = batailleNavale(12, 12)
         self.assertIsNot(None, bn)
 
     # Test d'initialisation d'une grille vide
@@ -86,8 +86,8 @@ class TestBn(unittest.TestCase):
         i = bn.createTypeBateau(-1000, -12)
         self.assertIsNone(i)
 
-    # Test types bateaux invalide (positionnement impossible)
-    # test enlevé car l'erreur est au niveau de la creation des bateaux
+        # Test types bateaux invalide (positionnement impossible)
+        # test enlevé car l'erreur est au niveau de la creation des bateaux
 
 
 class batailleNavale():
@@ -119,8 +119,16 @@ class batailleNavale():
         return len(self._typeBateaux)
 
     def createBateau(self, x, y, z):
-        self._bateaux.append([x, y, z])
-        return len(self._bateaux)
+        if (x + self._typeBateaux[z - 1][0]) > len(self._grille) or (y + self._typeBateaux[z - 1][1]) > len(
+                self._grille[0]) or x < 0 or y < 0:
+            return None
+        else:
+            for i in range(x,x+self._typeBateaux[z - 1][0]):
+                self._grille[i][y] = z
+            for i in range(y, y + self._typeBateaux[z - 1][1]):
+                self._grille[x][i] = z
+            self._bateaux.append([x, y, z])
+            return len(self._bateaux)
 
     def bateau(self, i):
         return self._bateaux[i - 1]
