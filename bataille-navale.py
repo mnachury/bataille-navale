@@ -63,6 +63,7 @@ class TestBn(unittest.TestCase):
 class batailleNavale():
     def __init__(self):
         self._bateaux = []
+        self._typeBateaux = []
 
     # Fonction grille
 
@@ -80,16 +81,19 @@ class batailleNavale():
     # Fonction bateaux
 
     def createTypeBateau(self, x, y):
-        self._typeBateaux.append({x, y})
+        self._typeBateaux.append([x, y])
         # return 1 pour 1 bateaux (même si id 0)
         return len(self._bateaux)
 
     def createBateau(self, x, y, z):
-        self._typeBateaux.append({x, y, z - 1})
+        self._bateaux.append([x, y, z - 1])
         return len(self._bateaux)
 
     def bateau(self, i):
-        return self._bateaux(i - 1)
+        return self._bateaux[i - 1]
+
+    def typeBateau(self, i):
+        return self._typeBateaux[i - 1]
 
 
 if __name__ == '__main__':
