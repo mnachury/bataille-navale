@@ -134,16 +134,17 @@ class TestBn(unittest.TestCase):
         tb3 = bn.createTypeBateau(1, 2)
         tb4 = bn.createTypeBateau(3, 2)
         tb5 = bn.createTypeBateau(3, 1)
-        tb6 = bn.createTypeBateau(3, 2)
-        tb7 = bn.createTypeBateau(1, 2)
+        #tb6 = bn.createTypeBateau(3, 2)
+        #tb7 = bn.createTypeBateau(1, 2)
         bn.createBateau(1, 0, tb1)
         bn.createBateau(5, 0, tb2)
         bn.createBateau(9, 0, tb3)
         bn.createBateau(7, 2, tb4)
         bn.createBateau(1, 7, tb5)
-        bn.createBateau(6, 8, tb6)
-        bn.createBateau(2, 4, tb7)
+        bn.createBateau(6, 8, tb4)
+        bn.createBateau(2, 4, tb3)
         grille = bn.grille()
+        self.maxDiff = None
         self.assertEqual(grille, grilleTest)
 
     # Test de chevauchement bateaux
