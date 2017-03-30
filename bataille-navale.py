@@ -82,14 +82,25 @@ class TestBn(unittest.TestCase):
     def test_TooBigBateau(self):
         bn = batailleNavale()
         bn.createGrille(10, 10)
-        i = bn.createTypeBateau(1000, 1000)
+        i = bn.createTypeBateau(11, 6)
         typeBateau = bn.typeBateau(i)
         self.assertIsNone(typeBateau)
 
-    # Test bateau invalide
+    # Test bateau avec dimensions négatives
     def test_NegativeBateau(self):
         bn = batailleNavale()
         i = bn.createTypeBateau(-1000, -12)
+        typeBateau = bn.typeBateau(i)
+        self.assertIsNone(typeBateau)
+
+    # Test bateaux invalide (positionnement impossible)
+    def test_TooBigBateaux(self):
+        bn = batailleNavale()
+        bn.createGrille(10, 10)
+        i = bn.createTypeBateau(8, 6)
+        typeBateau = bn.typeBateau(i)
+        self.assertIsNotNone(typeBateau)
+        i = bn.createTypeBateau(8, 6)
         typeBateau = bn.typeBateau(i)
         self.assertIsNone(typeBateau)
 
