@@ -137,9 +137,9 @@ class batailleNavale():
             self._grille[0]) or x < 0 or y < 0:
             return None
         else:
-            for ix in range(x, x + self._typeBateaux[z - 1][0]):
-                for iy in range(y, y + self._typeBateaux[z - 1][1]):
-                    self._grille[ix][iy] = z
+            for iy in range(y, y + self._typeBateaux[z - 1][1]):
+                for ix in range(x, x + self._typeBateaux[z - 1][0]):
+                    self._grille[iy][ix] = z
             self._bateaux.append([x, y, z])
             return len(self._bateaux)
 
