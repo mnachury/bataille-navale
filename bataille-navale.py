@@ -59,6 +59,7 @@ class TestBn(unittest.TestCase):
         self.assertEqual(1, bateau[1])
         self.assertEqual(idBateau, bateau[2])
 
+
 class batailleNavale():
     def __init__(self):
         self._bateaux = []
