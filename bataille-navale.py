@@ -86,22 +86,6 @@ class TestBn(unittest.TestCase):
         i = bn.createTypeBateau(-1000, -12)
         self.assertIsNone(i)
 
-    # Test positionnement bateau
-    def test_PlaceBateau(self):
-        bn = batailleNavale(15, 15)
-        grille = bn.grille()
-        i = bn.createTypeBateau(4, 1)
-        bn.createBateau(0, 0, i)
-        row = grille[0]
-        for j in range(0, 3):
-            self.assertEqual(row[j], i)
-
-    # Test positionnement bateau négatif
-    def test_NegativePlaceBateau(self):
-        bn = batailleNavale(10, 10)
-        i = bn.createTypeBateau(4, 1)
-        idBateau = bn.createBateau(-5, 0, i)
-        self.assertIsNone(idBateau)
         # Test types bateaux invalide (positionnement impossible)
         # test enlevé car l'erreur est au niveau de la creation des bateaux
 
@@ -135,16 +119,8 @@ class batailleNavale():
         return len(self._typeBateaux)
 
     def createBateau(self, x, y, z):
-        if (x + self._typeBateaux[z - 1][0]) > len(self._grille) or (y + self._typeBateaux[z - 1][1]) > len(
-                self._grille[0]) or x < 0 or y < 0:
-            return None
-        else:
-            for i in range(x,x+self._typeBateaux[z - 1][0]):
-                self._grille[i][y] = z
-            for i in range(y, y + self._typeBateaux[z - 1][1]):
-                self._grille[x][i] = z
-            self._bateaux.append([x, y, z])
-            return len(self._bateaux)
+        self._bateaux.append([x, y, z])
+        return len(self._bateaux)
 
     def bateau(self, i):
         return self._bateaux[i - 1]
