@@ -22,7 +22,7 @@ class TestBn(unittest.TestCase):
             for cel in row:
                 self.assertEqual(0, cel)
 
-    # Test grille trop grande (maximum 100)
+    # Test grille trop grande (maximum maxX;maxY)
     def testTooBigGrille(self):
         bn = batailleNavale()
         bn.createGrille(500, 101)
@@ -35,7 +35,7 @@ class TestBn(unittest.TestCase):
             for cel in row:
                 self.assertEqual(0, cel)
 
-    # Test grille trop petite (minimum 5)
+    # Test grille trop petite (minimum minX;minY)
     def testTooSmallGrille(self):
         bn = batailleNavale()
         bn.createGrille(3, 2)
