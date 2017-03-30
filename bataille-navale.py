@@ -126,8 +126,18 @@ class batailleNavale():
         return len(self._typeBateaux)
 
     def createBateau(self, x, y, z):
-        self._bateaux.append([x, y, z])
-        return len(self._bateaux)
+        if (x + self._typeBateaux[z - 1][0]) > len(self._grille) or (y + self._typeBateaux[z - 1][1]) > len(
+                self._grille[0]) or x < 0 or y < 0:
+            return None
+        else:
+            for i in range(x, x + self._typeBateaux[z - 1][0]):
+                self._grille[i][y] = z
+
+            for i in range(y, y + self._typeBateaux[z - 1][1]):
+                self._grille[x][i] = z
+            self._bateaux.append([x, y, z])
+
+            return len(self._bateaux)
 
     def bateau(self, i):
         return self._bateaux[i - 1]
@@ -135,6 +145,5 @@ class batailleNavale():
     def typeBateau(self, i):
         return self._typeBateaux[i - 1]
 
-
-if __name__ == '__main__':
-    unittest.main()
+    if __name__ == '__main__':
+        unittest.main()
