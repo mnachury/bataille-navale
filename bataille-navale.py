@@ -15,7 +15,7 @@ class TestBn(unittest.TestCase):
     # Test d'initialisation d'une grille vide
     def test_CreateGrille(self):
         bn = batailleNavale(10, 50)
-        grille = bn.grille()
+        grille = bn.players[0].grille()
         self.assertEqual(50, len(grille))
         for row in grille:
             self.assertEqual(10, len(row))
@@ -25,7 +25,7 @@ class TestBn(unittest.TestCase):
     # Test grille trop grande (maximum maxX;maxY)
     def test_TooBigGrille(self):
         bn = batailleNavale(500, 101)
-        grille = bn.grille()
+        grille = bn.players[0].grille()
         self.assertNotEqual(101, len(grille))
         self.assertEqual(maxY, len(grille))
         for row in grille:
@@ -37,7 +37,7 @@ class TestBn(unittest.TestCase):
     # Test grille trop petite (minimum minX;minY)
     def test_TooSmallGrille(self):
         bn = batailleNavale(3, 2)
-        grille = bn.grille()
+        grille = bn.players[0].grille()
         self.assertNotEqual(2, len(grille))
         self.assertEqual(minY, len(grille))
         for row in grille:
@@ -49,7 +49,7 @@ class TestBn(unittest.TestCase):
     # Test grille négative
     def test_NegativeGrille(self):
         bn = batailleNavale(-30, -12000)
-        grille = bn.grille()
+        grille = bn.players[0].grille()
         self.assertNotEqual(-12000, len(grille))
         self.assertEqual(minY, len(grille))
         for row in grille:
@@ -68,8 +68,8 @@ class TestBn(unittest.TestCase):
     def test_CreateBateau(self):
         bn = batailleNavale(10, 10)
         i = bn.createTypeBateau(1, 4, 1)
-        idBateau = bn.createBateau(0, 0, i)
-        bateau = bn.bateau(idBateau)
+        idBateau = bn.players[0].createBateau(0, 0, i)
+        bateau = bn.players[0].bateau(idBateau)
         self.assertEqual(0, bateau[0])
         self.assertEqual(0, bateau[1])
         self.assertEqual(idBateau, bateau[2])
@@ -90,7 +90,7 @@ class TestBn(unittest.TestCase):
     def test_InvalidePlaceBateau(self):
         bn = batailleNavale(10, 10)
         i = bn.createTypeBateau(4, 1, 1)
-        idBateau = bn.createBateau(8, 8, i)
+        idBateau = bn.players[0].createBateau(8, 8, i)
         self.assertIsNone(idBateau)
 
     # Test de positionnement valide 1
