@@ -1,5 +1,6 @@
 import unittest
 
+nbPlayers = 2
 maxX = 99
 maxY = 99
 minX = 5
@@ -96,9 +97,9 @@ class TestBn(unittest.TestCase):
     # Test de positionnement valide 1
     def test_ValidPlaceBateau1(self):
         bn = batailleNavale(15, 15)
-        grille = bn.grille()
+        grille = bn.players[0].grille()
         i = bn.createTypeBateau(4, 1, 1)
-        bn.createBateau(2, 2, i)
+        bn.players[0].createBateau(2, 2, i)
         row = grille[2]
         for j in range(2, 5):
             self.assertEqual(row[j], i)
@@ -106,9 +107,9 @@ class TestBn(unittest.TestCase):
     # Test de positionnement valide 2
     def test_ValidPlaceBateau2(self):
         bn = batailleNavale(15, 15)
-        grille = bn.grille()
+        grille = bn.players[0].grille()
         i = bn.createTypeBateau(4, 8, 1)
-        idBateau = bn.createBateau(2, 2, i)
+        idBateau = bn.players[0].createBateau(2, 2, i)
         for k in range(2, 10):
             row = grille[k]
             for j in range(2, 5):
@@ -134,31 +135,35 @@ class TestBn(unittest.TestCase):
         tb3 = bn.createTypeBateau(1, 2, 2)
         tb4 = bn.createTypeBateau(3, 2, 2)
         tb5 = bn.createTypeBateau(3, 1, 1)
-        bn.createBateau(1, 0, tb1)
-        bn.createBateau(5, 0, tb2)
-        bn.createBateau(9, 0, tb3)
-        bn.createBateau(7, 2, tb4)
-        bn.createBateau(1, 7, tb5)
-        bn.createBateau(6, 8, tb4)
-        bn.createBateau(2, 4, tb3)
-        grille = bn.grille()
+        bn.players[0].createBateau(1, 0, tb1)
+        bn.players[0].createBateau(5, 0, tb2)
+        bn.players[0].createBateau(9, 0, tb3)
+        bn.players[0].createBateau(7, 2, tb4)
+        bn.players[0].createBateau(1, 7, tb5)
+        bn.players[0].createBateau(6, 8, tb4)
+        bn.players[0].createBateau(2, 4, tb3)
+        grille = bn.players[0].grille()
         self.assertEqual(grille, grilleTest)
 
     # Test de chevauchement bateaux
     def test_OverlapPlaceBateaux(self):
         bn = batailleNavale(10, 10)
         i = bn.createTypeBateau(4, 8, 2)
-        b1 = bn.createBateau(2, 2, i)
-        b2 = bn.createBateau(2, 2, i)
+        b1 = bn.players[0].createBateau(2, 2, i)
+        b2 = bn.players[0].createBateau(2, 2, i)
         self.assertIsNotNone(b1)
         self.assertIsNone(b2)
 
 
 class batailleNavale():
     def __init__(self, x, y):
-        self._createGrille(x, y)
-        self._bateaux = []
+        self.players = []
         self._typeBateaux = []
+        self._x = x
+        self._y = y
+        grille = self._createGrille(x,y)
+        for i in range(0, nbPlayers):
+            self.players.append(player(grille))
 
     # Fonction grille
 
@@ -168,19 +173,33 @@ class batailleNavale():
         if y > maxY: y = maxY
         if x < minX: x = minX
         if y < minY: y = minY
-        self._grille = [[0] * x for _ in range(y)]
+        return [[0] * x for _ in range(y)]
+
+    # Fonction type bateaux
+
+    def createTypeBateau(self, x, y, nbBateaux):
+        if x > self._x or y > self._y or x < 0 or y < 0:
+            return None
+        self._typeBateaux.append([x, y, nbBateaux])
+        for i in range(0, nbPlayers):
+            self.players[i].setTypeBateaux(self._typeBateaux)
+        # return 1 pour 1 bateau (même si id 0)
+        return len(self._typeBateaux)
+
+    def typeBateau(self, i):
+        return self._typeBateaux[i - 1]
+
+
+class player():
+    def __init__(self, grille):
+        self._grille = grille
+        self._bateaux = []
+
+    def setTypeBateaux(self, typeBateaux):
+        self._typeBateaux = typeBateaux
 
     def grille(self):
         return self._grille
-
-    # Fonction bateaux
-
-    def createTypeBateau(self, x, y, nbBateaux):
-        if x > len(self._grille) or y > len(self._grille[0]) or x < 0 or y < 0:
-            return None
-        self._typeBateaux.append([x, y, nbBateaux])
-        # return 1 pour 1 bateau (même si id 0)
-        return len(self._typeBateaux)
 
     def createBateau(self, x, y, z):
         if (x + self._typeBateaux[z - 1][0
@@ -199,10 +218,6 @@ class batailleNavale():
 
     def bateau(self, i):
         return self._bateaux[i - 1]
-
-    def typeBateau(self, i):
-        return self._typeBateaux[i - 1]
-
 
 if __name__ == '__main__':
     unittest.main()
