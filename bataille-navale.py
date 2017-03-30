@@ -5,6 +5,7 @@ maxY = 99
 minX = 5
 minY = 5
 
+
 class TestBn(unittest.TestCase):
     # Test de base, instanciation classe
     def test_bnBase(self):
@@ -48,6 +49,7 @@ class TestBn(unittest.TestCase):
             for cel in row:
                 self.assertEqual(0, cel)
 
+<<<<<<< HEAD
     # Test initialisation bateau
     def test_CreateBateau(self):
         bn = batailleNavale()
@@ -57,16 +59,28 @@ class TestBn(unittest.TestCase):
         self.assertEqual(5, bateau[0])
         self.assertEqual(1, bateau[1])
         self.assertEqual(idBateau, bateau[2])
+=======
+                # Test initialisation bateau
+                # def test_CreateBateau(self):
+                #     bn = batailleNavale()
+                #     i = bn.createBateau(5, 1)
+                #     bateau = bn.bateau(i)
+                #     self.assertEqual(1, len(bateau))
+                #     for row in bateau:
+                #         self.assertEqual(10, len(row))
+                #         for cel in row:
+                #             pass
+>>>>>>> 19f6ac0784ffa437b54914e77524316db03f6d63
 
-class  batailleNavale():
 
+class batailleNavale():
     def __init__(self):
         self._bateaux = []
 
     # Fonction grille
 
     # Intialise une grille de taille x par y remplie de 0
-    def  createGrille(self, x, y):
+    def createGrille(self, x, y):
         if x > maxX: x = maxX
         if y > maxY: y = maxY
         if x < minX: x = minX
@@ -78,12 +92,17 @@ class  batailleNavale():
 
     # Fonction bateaux
 
-    def createBateau(self,x,y,z):
-        self._bateaux.append({x,y,z})
-        return len(self._bateaux-1)
+    def createTypeBateau(self, x, y):
+        self._typeBateaux.append({x, y})
+        return len(self._bateaux - 1)
 
-    def bateau(self,i):
+    def createBateau(self, x, y, z):
+        self._typeBateaux.append({x, y, z})
+        return len(self._bateaux - 1)
+
+    def bateau(self, i):
         return self._bateaux(i)
+
 
 if __name__ == '__main__':
     unittest.main()
