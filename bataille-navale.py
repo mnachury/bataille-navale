@@ -103,6 +103,13 @@ class TestBn(unittest.TestCase):
         idBateau = bn.createBateau(-5, 0, i)
         self.assertIsNone(idBateau)
 
+    # Test positionnement invalide
+    def test_InvalidePlaceBateau(self):
+        bn = batailleNavale(10, 10)
+        i = bn.createTypeBateau(4, 1)
+        idBateau = bn.createBateau(8, 8, i)
+        self.assertIsNone(idBateau)
+
 
 class batailleNavale():
     def __init__(self, x, y):
