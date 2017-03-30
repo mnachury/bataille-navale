@@ -188,13 +188,13 @@ class batailleNavale():
             self._grille[0]) or x < 0 or y < 0:
             return None
         else:
+            self._bateaux.append([x, y, z])
             for iy in range(y, y + self._typeBateaux[z - 1][1]):
                 for ix in range(x, x + self._typeBateaux[z - 1][0]):
                     if self._grille[iy][ix] == 0:
-                        self._grille[iy][ix] = z
+                        self._grille[iy][ix] = len(self._bateaux)
                     else:
                         return None
-            self._bateaux.append([x, y, z])
             return len(self._bateaux)
 
     def bateau(self, i):
