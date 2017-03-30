@@ -49,15 +49,14 @@ class TestBn(unittest.TestCase):
                 self.assertEqual(0, cel)
 
     # Test initialisation bateau
-    # def test_CreateBateau(self):
-    #     bn = batailleNavale()
-    #     i = bn.createBateau(5, 1)
-    #     bateau = bn.bateau(i)
-    #     self.assertEqual(1, len(bateau))
-    #     for row in bateau:
-    #         self.assertEqual(10, len(row))
-    #         for cel in row:
-    #             pass
+    def test_CreateBateau(self):
+        bn = batailleNavale()
+        i = bn.createTypeBateau(5, 1)
+        idBateau = bn.createBateau(0, 0, i)
+        bateau = bn.bateau(idBateau)
+        self.assertEqual(5, bateau[0])
+        self.assertEqual(1, bateau[1])
+        self.assertEqual(idBateau, bateau[2])
 
 class  batailleNavale():
 
