@@ -118,16 +118,16 @@ class TestBn(unittest.TestCase):
     def test_ValidPlaceCombineBateau(self):
         bn = batailleNavale(10, 10)
         grilleTest = [
-        [0, 1, 1, 1, 0, 2, 2, 0, 0, 3],
-        [0, 1, 1, 1, 0, 2, 2, 0, 0, 3],
-        [0, 1, 1, 1, 0, 2, 2, 4, 4, 4],
-        [0, 0, 0, 0, 0, 2, 2, 4, 4, 4],
-        [0, 0, 7, 0, 0, 2, 2, 0, 0, 0],
-        [0, 0, 7, 0, 0, 2, 2, 0, 0, 0],
-        [0, 0, 0, 0, 0, 2, 2, 0, 0, 0],
-        [0, 5, 5, 5, 0, 2, 2, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 6, 6, 6, 0],
-        [0, 0, 0, 0, 0, 0, 6, 6, 6, 0]
+            [0, 1, 1, 1, 0, 2, 2, 0, 0, 3],
+            [0, 1, 1, 1, 0, 2, 2, 0, 0, 3],
+            [0, 1, 1, 1, 0, 2, 2, 4, 4, 4],
+            [0, 0, 0, 0, 0, 2, 2, 4, 4, 4],
+            [0, 0, 7, 0, 0, 2, 2, 0, 0, 0],
+            [0, 0, 7, 0, 0, 2, 2, 0, 0, 0],
+            [0, 0, 0, 0, 0, 2, 2, 0, 0, 0],
+            [0, 5, 5, 5, 0, 2, 2, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 6, 6, 6, 0],
+            [0, 0, 0, 0, 0, 0, 6, 6, 6, 0]
         ]
         tb1 = bn.createTypeBateau(3, 3, 1)
         tb2 = bn.createTypeBateau(2, 8, 1)
@@ -175,10 +175,10 @@ class batailleNavale():
 
     # Fonction bateaux
 
-    def createTypeBateau(self, x, y):
+    def createTypeBateau(self, x, y, nbBateaux):
         if x > len(self._grille) or y > len(self._grille[0]) or x < 0 or y < 0:
             return None
-        self._typeBateaux.append([x, y])
+        self._typeBateaux.append([x, y, nbBateaux])
         # return 1 pour 1 bateau (même si id 0)
         return len(self._typeBateaux)
 
@@ -202,6 +202,7 @@ class batailleNavale():
 
     def typeBateau(self, i):
         return self._typeBateaux[i - 1]
+
 
 if __name__ == '__main__':
     unittest.main()
