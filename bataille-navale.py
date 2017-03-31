@@ -1,6 +1,5 @@
 import unittest
 
-nbPlayers = 2
 maxX = 99
 maxY = 99
 minX = 5
@@ -142,28 +141,34 @@ class TestBn(unittest.TestCase):
         bn.players[0].createBateau(1, 7, tb5)
         bn.players[0].createBateau(6, 8, tb4)
         bn.players[0].createBateau(2, 4, tb3)
-        grille = bn.players[0].grille()
+        grille = bn.grille()
         self.assertEqual(grille, grilleTest)
 
     # Test de chevauchement bateaux
     def test_OverlapPlaceBateaux(self):
         bn = batailleNavale(10, 10)
         i = bn.createTypeBateau(4, 8, 2)
-        b1 = bn.players[0].createBateau(2, 2, i)
-        b2 = bn.players[0].createBateau(2, 2, i)
+        b1 = bn.createBateau(2, 2, i)
+        b2 = bn.createBateau(2, 2, i)
         self.assertIsNotNone(b1)
         self.assertIsNone(b2)
+
+    # Test de création bateaux 2 joueurs
+    # def test_CreateBateaux2Players(self):
+    #     bn = batailleNavale(10, 10)
+    #     tb1 = bn.createTypeBateau(3, 3, 1)
+    #     tb2 = bn.createTypeBateau(2, 8, 1)
+    #     bn.players[0].createBateau(1, 0, tb1)
+    #     bn.players[0].createBateau(5, 0, tb2)
+    #     bn.players[1].createBateau(1, 7, tb1)
+    #     bn.players[1].createBateau(6, 8, tb2)
 
 
 class batailleNavale():
     def __init__(self, x, y):
-        self.players = []
+        self._createGrille(x, y)
+        self._bateaux = []
         self._typeBateaux = []
-        self._x = x
-        self._y = y
-        grille = self._createGrille(x,y)
-        for i in range(0, nbPlayers):
-            self.players.append(player(grille))
 
     # Fonction grille
 
@@ -173,49 +178,29 @@ class batailleNavale():
         if y > maxY: y = maxY
         if x < minX: x = minX
         if y < minY: y = minY
-        return [[0] * x for _ in range(y)]
-
-    # Fonction type bateaux
-
-    def createTypeBateau(self, x, y, nbBateaux):
-        if x > self._x or y > self._y or x < 0 or y < 0:
-            return None
-        self._typeBateaux.append([x, y, nbBateaux])
-        for i in range(0, nbPlayers):
-            self.players[i].setTypeBateaux(self._typeBateaux)
-        # return 1 pour 1 bateau (même si id 0)
-        return len(self._typeBateaux)
-
-    def typeBateau(self, i):
-        return self._typeBateaux[i - 1]
-
-
-class player():
-    def __init__(self, grille):
-        self._grille = grille
-        self._bateaux = []
-
-    def setTypeBateaux(self, typeBateaux):
-        self._typeBateaux = typeBateaux
+        self._grille = [[0] * x for _ in range(y)]
 
     def grille(self):
         return self._grille
 
-    def createBateau(self, x, y, idType):
-        btx = 0
-        for bateau in self._bateaux:
-            if bateau[2] == idType-1:
-                btx += 1
-        if btx > self._typeBateaux[idType-1][2]:
+    # Fonction bateaux
+
+    def createTypeBateau(self, x, y, nbBateaux):
+        if x > len(self._grille) or y > len(self._grille[0]) or x < 0 or y < 0:
             return None
-        if (x + self._typeBateaux[idType - 1][0
-        ]) > len(self._grille) or (y + self._typeBateaux[idType - 1][1]) > len(
+        self._typeBateaux.append([x, y, nbBateaux])
+        # return 1 pour 1 bateau (même si id 0)
+        return len(self._typeBateaux)
+
+    def createBateau(self, x, y, z):
+        if (x + self._typeBateaux[z - 1][0
+        ]) > len(self._grille) or (y + self._typeBateaux[z - 1][1]) > len(
             self._grille[0]) or x < 0 or y < 0:
             return None
         else:
-            self._bateaux.append([x, y, idType])
-            for iy in range(y, y + self._typeBateaux[idType - 1][1]):
-                for ix in range(x, x + self._typeBateaux[idType - 1][0]):
+            self._bateaux.append([x, y, z])
+            for iy in range(y, y + self._typeBateaux[z - 1][1]):
+                for ix in range(x, x + self._typeBateaux[z - 1][0]):
                     if self._grille[iy][ix] == 0:
                         self._grille[iy][ix] = len(self._bateaux)
                     else:
@@ -224,6 +209,10 @@ class player():
 
     def bateau(self, i):
         return self._bateaux[i - 1]
+
+    def typeBateau(self, i):
+        return self._typeBateaux[i - 1]
+
 
 if __name__ == '__main__':
     unittest.main()
