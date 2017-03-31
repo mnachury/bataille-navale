@@ -196,16 +196,24 @@ class TestBn(unittest.TestCase):
         b4 = bn.players[1].createBateau(1, 0, tb1)
         b5 = bn.players[1].createBateau(9, 0, tb1)
         b6 = bn.players[1].createBateau(7, 5, tb2)
+        # Tir dans l'eau
         fire = bn.players[0].tirer(1, 0, 5)
-        self.assertFalse(fire)
+        self.assertEqual(0, fire)
+        # Tir touché
         fire = bn.players[0].tirer(1, 1, 0)
-        self.assertTrue(fire)
-        fire = bn.players[1].tirer(0, 1, 0)
-        self.assertTrue(fire)
+        self.assertEqual(1, fire)
+        # Tir touché
+        fire = bn.players[1].tirer(0, 7, 5)
+        self.assertEqual(1, fire)
+        # Tir sur joueur inexistant
         fire = bn.players[0].tirer(2, 1, 0)
-        self.assertIsNone(fire)
+        self.assertEqual(-1, fire)
+        # Tir en dehors de la map
         fire = bn.players[0].tirer(1, 100, 1000)
-        self.assertIsNone(fire)
+        self.assertEqual(-1, fire)
+        # Tir touché-coulé
+        fire = bn.players[1].tirer(0, 8, 5)
+        self.assertEqual(2, fire)
 
 
 class batailleNavale():
