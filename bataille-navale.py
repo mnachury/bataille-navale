@@ -216,7 +216,7 @@ class batailleNavale():
         self._y = y
         grille = self._createGrille(x,y)
         for i in range(0, nbPlayers):
-            self.players.append(player(grille))
+            self.players.append(player(self,grille,i))
 
     # Fonction grille
 
@@ -242,9 +242,28 @@ class batailleNavale():
     def typeBateau(self, i):
         return self._typeBateaux[i - 1]
 
+    def _tirer(self,iTx,iRx,x,y):
+        if iTx == iRx or self.players[iTx] is None or self.players[iRx] is None:
+            return None
+        btTarget = self.players[iTx].grille[x][y]
+        if btTarget > 0:
+            self.players[iTx].grille[x][y] = 0
+            self.players[iTx]._bateaux[btTarget-1][3] -= 1
+            nbVieRestante = 0
+            for bateau in self.players[iTx]._bateaux:
+                nbVieRestante += bateau[3]
+            if nbVieRestante == 0:
+                return 3
+            elif self.players[iTx]._bateaux[btTarget-1][3] > 0:
+                return 1
+            else:
+                return 2
+
 
 class player():
-    def __init__(self, grille):
+    def __init__(self,bn, grille,i):
+        self._bn = bn
+        self._i = i
         self._grille = grille
         self._bateaux = []
 
@@ -266,7 +285,7 @@ class player():
             self._grille[0]) or x < 0 or y < 0:
             return None
         else:
-            self._bateaux.append([x, y, idType])
+            self._bateaux.append([x, y, idType,x*y])
             for iy in range(y, y + self._typeBateaux[idType - 1][1]):
                 for ix in range(x, x + self._typeBateaux[idType - 1][0]):
                     if self._grille[iy][ix] == 0:
@@ -277,6 +296,9 @@ class player():
 
     def bateau(self, i):
         return self._bateaux[i - 1]
+
+    def tirer(self,iCible,x,y):
+        return self._bn._tirer(self._i,iCible,x,y)
 
 if __name__ == '__main__':
     unittest.main()
