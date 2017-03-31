@@ -154,6 +154,36 @@ class TestBn(unittest.TestCase):
         self.assertIsNotNone(b1)
         self.assertIsNone(b2)
 
+    # Test de création de bateaux pour 2 joueurs
+    def test_CreateBateaux2Players(self):
+        bn = batailleNavale(10, 10)
+        tb1 = bn.createTypeBateau(3, 3, 1)
+        tb2 = bn.createTypeBateau(2, 1, 1)
+        b1 = bn.players[0].createBateau(1, 0, tb1)
+        b2 = bn.players[0].createBateau(9, 0, tb1)
+        b3 = bn.players[0].createBateau(7, 5, tb2)
+        b4 = bn.players[1].createBateau(1, 0, tb1)
+        b5 = bn.players[1].createBateau(9, 0, tb1)
+        b6 = bn.players[1].createBateau(7, 5, tb2)
+        for name in ['b1', 'b2', 'b3', 'b4', 'b5', 'b6']:
+            self.assertIsNotNone(name)
+
+    # Test de création de bateaux pour 2 joueurs
+    def test_InvalidCreateBateaux2Players(self):
+        bn = batailleNavale(10, 10)
+        tb1 = bn.createTypeBateau(3, 3, 1)
+        tb2 = bn.createTypeBateau(2, 1, 1)
+        b1 = bn.players[0].createBateau(1, 0, tb1)
+        b2 = bn.players[0].createBateau(9, 0, tb1)
+        b3 = bn.players[0].createBateau(7, 5, tb1)
+        b4 = bn.players[1].createBateau(1, 0, tb2)
+        b5 = bn.players[1].createBateau(9, 0, tb2)
+        b6 = bn.players[1].createBateau(7, 5, tb2)
+        for name in ['b1', 'b2', 'b3']:
+            self.assertIsNotNone(name)
+        for name in ['b4', 'b5', 'b6']:
+            self.assertIsNone(name)
+
 
 class batailleNavale():
     def __init__(self, x, y):
