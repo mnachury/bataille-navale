@@ -228,6 +228,15 @@ class TestBn(unittest.TestCase):
         jeu = bn.startGame()
         self.assertTrue(jeu)
 
+    # Test start THE GAME invalide
+    def test_InvalidStartGame(self):
+        bn = batailleNavale(10, 10)
+        tb1 = bn.createTypeBateau(3, 3, 1)
+        tb2 = bn.createTypeBateau(2, 1, 1)
+        b1 = bn.players[0].createBateau(1, 0, tb1)
+        b2 = bn.players[1].createBateau(1, 0, tb2)
+        jeu = bn.startGame()
+        self.assertFalse(jeu)
 
 
 class batailleNavale():
