@@ -187,6 +187,7 @@ class TestBn(unittest.TestCase):
     # Test tir à la Kim Jong Un
     def test_FireEnemy(self):
         bn = batailleNavale(10, 10)
+        b1 = bn.createTypeBateau(3, 3, 1)
         tb1 = bn.createTypeBateau(3, 3, 1)
         tb2 = bn.createTypeBateau(2, 1, 1)
         b1 = bn.players[0].createBateau(1, 0, tb1)
@@ -195,7 +196,6 @@ class TestBn(unittest.TestCase):
         b4 = bn.players[1].createBateau(1, 0, tb1)
         b5 = bn.players[1].createBateau(9, 0, tb1)
         b6 = bn.players[1].createBateau(7, 5, tb2)
-        # Tir dans l'eau
         fire = bn.players[0].tirer(1, 0, 5)
         self.assertEqual(0, fire)
         # Tir touché
@@ -207,7 +207,6 @@ class TestBn(unittest.TestCase):
         # Tir sur joueur inexistant
         fire = bn.players[0].tirer(2, 1, 0)
         self.assertIsNone(fire)
-        # Tir en dehors de la map
         fire = bn.players[0].tirer(1, 100, 1000)
         self.assertIsNone(fire)
         # Tir touché-coulé
@@ -264,7 +263,7 @@ class batailleNavale():
     def createTypeBateau(self, x, y, nbBateaux):
         if x > self._x or y > self._y or x < 0 or y < 0:
             return None
-        self._typeBateaux.append([x, y, nbBateaux])
+        self._typeBateaux.append([x, y, nbBateaux,x*y])
         for i in range(0, nbPlayers):
             self.players[i].setTypeBateaux(self._typeBateaux)
         # return 1 pour 1 bateau (même si id 0)
@@ -276,19 +275,21 @@ class batailleNavale():
     def _tirer(self,iTx,iRx,x,y):
         if iTx == iRx or self.players[iTx] is None or self.players[iRx] is None:
             return None
-        btTarget = self.players[iTx].grille[x][y]
+        btTarget = self.players[iRx]._grille[y][x]
         if btTarget > 0:
-            self.players[iTx].grille[x][y] = 0
-            self.players[iTx]._bateaux[btTarget-1][3] -= 1
+            self.players[iRx]._grille[y][x] = 0
+            self.players[iRx]._bateaux[btTarget-1][3] -= 1
             nbVieRestante = 0
-            for bateau in self.players[iTx]._bateaux:
+            for bateau in self.players[iRx]._bateaux:
                 nbVieRestante += bateau[3]
             if nbVieRestante == 0:
                 return 3
-            elif self.players[iTx]._bateaux[btTarget-1][3] > 0:
+            elif self.players[iRx]._bateaux[btTarget-1][3] > 0:
                 return 1
             else:
                 return 2
+        else:
+            return 0
 
 
 class player():
@@ -316,7 +317,7 @@ class player():
             self._grille[0]) or x < 0 or y < 0:
             return None
         else:
-            self._bateaux.append([x, y, idType,x*y])
+            self._bateaux.append([x, y, idType,self._typeBateaux[idType - 1][3]])
             for iy in range(y, y + self._typeBateaux[idType - 1][1]):
                 for ix in range(x, x + self._typeBateaux[idType - 1][0]):
                     if self._grille[iy][ix] == 0:
