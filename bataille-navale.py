@@ -308,7 +308,17 @@ class batailleNavale():
             for bateau in self.players[iRx]._bateaux:
                 nbVieRestante += bateau[3]
             if nbVieRestante == 0:
-                return 3
+                nbPlayerAlive = 0
+                for player in self.players:
+                    nbVieRestante = 0
+                    for bateau in player._bateaux:
+                        nbVieRestante += bateau[3]
+                    if nbVieRestante > 0:
+                        nbPlayerAlive += 1
+                if nbPlayerAlive == 1:
+                    return 4
+                else:
+                    return 3
             elif self.players[iRx]._bateaux[btTarget - 1][3] > 0:
                 return 1
             else:
