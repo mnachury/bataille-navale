@@ -237,26 +237,26 @@ class TestBn(unittest.TestCase):
         jeu = bn.startGame()
         self.assertFalse(jeu)
 
-    # Test piratage russe du system
-    def test_RussianHacking(self):
-        bn = batailleNavale(10, 10)
-        tb1 = bn.createTypeBateau(3, 3, 1)
-        tb2 = bn.createTypeBateau(2, 1, 1)
-        b1 = bn.players[0].createBateau(1, 0, tb1)
-        b2 = bn.players[0].createBateau(9, 0, tb1)
-        b3 = bn.players[0].createBateau(7, 5, tb2)
-        b4 = bn.players[1].createBateau(1, 0, tb1)
-        b5 = bn.players[1].createBateau(9, 0, tb1)
-        b6 = bn.players[1].createBateau(7, 5, tb2)
-        jeu = bn.startGame()
-        # Piratage de la grille
-        grille = bn.players[0].grille()
-        grille[0][0] = 1000
-        self.assertNotEqual(1000, grille[0][0])
-        # Piratage bateau
-        b4 = b1
-        self.assertNotEqual(b1, b4)
-
+        # MN : Espece de bidouilleur, je ne pense pas que ce test est un interet car on ne test pas l'interface utilisateur mais le system de jeux
+        # Test piratage russe du system
+        # def test_RussianHacking(self):
+        #     bn = batailleNavale(10, 10)
+        #     tb1 = bn.createTypeBateau(3, 3, 1)
+        #     tb2 = bn.createTypeBateau(2, 1, 1)
+        #     b1 = bn.players[0].createBateau(1, 0, tb1)
+        #     b2 = bn.players[0].createBateau(9, 0, tb1)
+        #     b3 = bn.players[0].createBateau(7, 5, tb2)
+        #     b4 = bn.players[1].createBateau(1, 0, tb1)
+        #     b5 = bn.players[1].createBateau(9, 0, tb1)
+        #     b6 = bn.players[1].createBateau(7, 5, tb2)
+        #     jeu = bn.startGame()
+        #     # Piratage de la grille
+        #     grille = bn.players[0].grille()
+        #     grille[0][0] = 1000
+        #     self.assertNotEqual(1000, grille[0][0])
+        #     # Piratage bateau
+        #     b4 = b1
+        #     self.assertNotEqual(b1, b4)
 
 
 class batailleNavale():
@@ -265,9 +265,9 @@ class batailleNavale():
         self._typeBateaux = []
         self._x = x
         self._y = y
-        grille = self._createGrille(x,y)
+        grille = self._createGrille(x, y)
         for i in range(0, nbPlayers):
-            self.players.append(player(self,grille,i))
+            self.players.append(player(self, grille, i))
 
     # Fonction grille
 
@@ -284,7 +284,7 @@ class batailleNavale():
     def createTypeBateau(self, x, y, nbBateaux):
         if x > self._x or y > self._y or x < 0 or y < 0:
             return None
-        self._typeBateaux.append([x, y, nbBateaux,x*y])
+        self._typeBateaux.append([x, y, nbBateaux, x * y])
         for i in range(0, nbPlayers):
             self.players[i].setTypeBateaux(self._typeBateaux)
         # return 1 pour 1 bateau (même si id 0)
@@ -293,28 +293,55 @@ class batailleNavale():
     def typeBateau(self, i):
         return self._typeBateaux[i - 1]
 
-    def _tirer(self,iTx,iRx,x,y):
-        if iTx == iRx or self.players[iTx] is None or self.players[iRx] is None:
+    def _tirer(self, iTx, iRx, x, y):
+        if iTx == iRx or len(self.players) <= iTx or len(self.players) <= iRx:
             return None
+        if x > len(self.players[iRx]._grille) and y > len(self.players[iRx]._grille[0]):
+            return None
+
         btTarget = self.players[iRx]._grille[y][x]
+
         if btTarget > 0:
             self.players[iRx]._grille[y][x] = 0
-            self.players[iRx]._bateaux[btTarget-1][3] -= 1
+            self.players[iRx]._bateaux[btTarget - 1][3] -= 1
             nbVieRestante = 0
             for bateau in self.players[iRx]._bateaux:
                 nbVieRestante += bateau[3]
             if nbVieRestante == 0:
                 return 3
-            elif self.players[iRx]._bateaux[btTarget-1][3] > 0:
+            elif self.players[iRx]._bateaux[btTarget - 1][3] > 0:
                 return 1
             else:
                 return 2
         else:
             return 0
 
+    def startGame(self):
+        tblTypeBateaux = [0] * len(self._typeBateaux)
+
+        if len(self.players) < 2:
+            return False
+        else:
+            for bateau in self.players[0]._bateaux:
+                if bateau[2] - 1 >= len(self._typeBateaux):
+                    return False
+                else:
+                    tblTypeBateaux[bateau[2] - 1] += 1
+
+        for player in self.players:
+            tmpTblTypeBateaux = [0] * len(self._typeBateaux)
+            for bateau in player._bateaux:
+                if bateau[2] - 1 >= len(self._typeBateaux):
+                    return False
+                else:
+                    tmpTblTypeBateaux[bateau[2] - 1] += 1
+            if tmpTblTypeBateaux != tblTypeBateaux:
+                return False
+        return True
+
 
 class player():
-    def __init__(self,bn, grille,i):
+    def __init__(self, bn, grille, i):
         self._bn = bn
         self._i = i
         self._grille = grille
@@ -329,16 +356,16 @@ class player():
     def createBateau(self, x, y, idType):
         btx = 0
         for bateau in self._bateaux:
-            if bateau[2] == idType-1:
+            if bateau[2] == idType - 1:
                 btx += 1
-        if btx > self._typeBateaux[idType-1][2]:
+        if btx > self._typeBateaux[idType - 1][2]:
             return None
         if (x + self._typeBateaux[idType - 1][0
         ]) > len(self._grille) or (y + self._typeBateaux[idType - 1][1]) > len(
             self._grille[0]) or x < 0 or y < 0:
             return None
         else:
-            self._bateaux.append([x, y, idType,self._typeBateaux[idType - 1][3]])
+            self._bateaux.append([x, y, idType, self._typeBateaux[idType - 1][3]])
             for iy in range(y, y + self._typeBateaux[idType - 1][1]):
                 for ix in range(x, x + self._typeBateaux[idType - 1][0]):
                     if self._grille[iy][ix] == 0:
@@ -350,8 +377,9 @@ class player():
     def bateau(self, i):
         return self._bateaux[i - 1]
 
-    def tirer(self,iCible,x,y):
-        return self._bn._tirer(self._i,iCible,x,y)
+    def tirer(self, iCible, x, y):
+        return self._bn._tirer(self._i, iCible, x, y)
+
 
 if __name__ == '__main__':
     unittest.main()
