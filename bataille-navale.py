@@ -237,6 +237,27 @@ class TestBn(unittest.TestCase):
         jeu = bn.startGame()
         self.assertFalse(jeu)
 
+    # Test piratage russe du system
+    def test_RussianHacking(self):
+        bn = batailleNavale(10, 10)
+        tb1 = bn.createTypeBateau(3, 3, 1)
+        tb2 = bn.createTypeBateau(2, 1, 1)
+        b1 = bn.players[0].createBateau(1, 0, tb1)
+        b2 = bn.players[0].createBateau(9, 0, tb1)
+        b3 = bn.players[0].createBateau(7, 5, tb2)
+        b4 = bn.players[1].createBateau(1, 0, tb1)
+        b5 = bn.players[1].createBateau(9, 0, tb1)
+        b6 = bn.players[1].createBateau(7, 5, tb2)
+        jeu = bn.startGame()
+        # Piratage de la grille
+        grille = bn.players[0].grille()
+        grille[0][0] = 1000
+        self.assertNotEqual(1000, grille[0][0])
+        # Piratage bateau
+        b4 = b1
+        self.assertNotEqual(b1, b4)
+
+
 
 class batailleNavale():
     def __init__(self, x, y):
