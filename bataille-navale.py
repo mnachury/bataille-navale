@@ -250,7 +250,7 @@ class TestBn(unittest.TestCase):
         jeu = bn.startGame()
         p1.tirer(1, 0, 0)
         fire = p1.tirer(1, 1, 0)
-        self.assertEqual(3, fire)
+        self.assertEqual(4, fire)
 
 class batailleNavale():
     def __init__(self, x, y):
