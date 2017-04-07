@@ -154,6 +154,103 @@ class TestBn(unittest.TestCase):
         self.assertIsNotNone(b1)
         self.assertIsNone(b2)
 
+    # Test de création de bateaux pour 2 joueurs
+    def test_CreateBateaux2Players(self):
+        bn = batailleNavale(10, 10)
+        tb1 = bn.createTypeBateau(3, 3, 1)
+        tb2 = bn.createTypeBateau(2, 1, 1)
+        b1 = bn.players[0].createBateau(1, 0, tb1)
+        b2 = bn.players[0].createBateau(9, 0, tb1)
+        b3 = bn.players[0].createBateau(7, 5, tb2)
+        b4 = bn.players[1].createBateau(1, 0, tb1)
+        b5 = bn.players[1].createBateau(9, 0, tb1)
+        b6 = bn.players[1].createBateau(7, 5, tb2)
+        for name in ['b1', 'b2', 'b3', 'b4', 'b5', 'b6']:
+            self.assertIsNotNone(name)
+
+    # Test de création de bateaux pour 2 joueurs
+    # def test_InvalidCreateBateaux2Players(self):
+    #     bn = batailleNavale(10, 10)
+    #     tb1 = bn.createTypeBateau(3, 3, 1)
+    #     tb2 = bn.createTypeBateau(2, 1, 1)
+    #     b1 = bn.players[0].createBateau(1, 0, tb1)
+    #     b2 = bn.players[0].createBateau(9, 0, tb1)
+    #     b3 = bn.players[0].createBateau(7, 5, tb1)
+    #     b4 = bn.players[1].createBateau(1, 0, tb2)
+    #     b5 = bn.players[1].createBateau(9, 0, tb2)
+    #     b6 = bn.players[1].createBateau(7, 5, tb2)
+    #     for name in ['b1', 'b2', 'b3']:
+    #         self.assertIsNotNone(name)
+    #     for name in ['b4', 'b5', 'b6']:
+    #         self.assertIsNone(name)
+
+    # Test tir à la Kim Jong Un
+    def test_FireEnemy(self):
+        bn = batailleNavale(10, 10)
+        b1 = bn.createTypeBateau(3, 3, 1)
+        tb1 = bn.createTypeBateau(3, 3, 1)
+        tb2 = bn.createTypeBateau(2, 1, 1)
+        b1 = bn.players[0].createBateau(1, 0, tb1)
+        b2 = bn.players[0].createBateau(9, 0, tb1)
+        b3 = bn.players[0].createBateau(7, 5, tb2)
+        b4 = bn.players[1].createBateau(1, 0, tb1)
+        b5 = bn.players[1].createBateau(9, 0, tb1)
+        b6 = bn.players[1].createBateau(7, 5, tb2)
+        fire = bn.players[0].tirer(1, 0, 5)
+        self.assertEqual(0, fire)
+        # Tir touché
+        fire = bn.players[0].tirer(1, 1, 0)
+        self.assertEqual(1, fire)
+        # Tir touché
+        fire = bn.players[1].tirer(0, 7, 5)
+        self.assertEqual(1, fire)
+        # Tir sur joueur inexistant
+        fire = bn.players[0].tirer(2, 1, 0)
+        self.assertIsNone(fire)
+        fire = bn.players[0].tirer(1, 100, 1000)
+        self.assertIsNone(fire)
+        # Tir touché-coulé
+        fire = bn.players[1].tirer(0, 8, 5)
+        self.assertEqual(2, fire)
+
+    # Test start THE GAME
+    def test_StartGame(self):
+        bn = batailleNavale(10, 10)
+        tb1 = bn.createTypeBateau(3, 3, 1)
+        tb2 = bn.createTypeBateau(2, 1, 1)
+        b1 = bn.players[0].createBateau(1, 0, tb1)
+        b2 = bn.players[0].createBateau(9, 0, tb1)
+        b3 = bn.players[0].createBateau(7, 5, tb2)
+        b4 = bn.players[1].createBateau(1, 0, tb1)
+        b5 = bn.players[1].createBateau(9, 0, tb1)
+        b6 = bn.players[1].createBateau(7, 5, tb2)
+        jeu = bn.startGame()
+        self.assertTrue(jeu)
+
+    # Test start THE GAME invalide
+    def test_InvalidStartGame(self):
+        bn = batailleNavale(10, 10)
+        tb1 = bn.createTypeBateau(3, 3, 1)
+        tb2 = bn.createTypeBateau(2, 1, 1)
+        b1 = bn.players[0].createBateau(1, 0, tb1)
+        b2 = bn.players[1].createBateau(1, 0, tb2)
+        jeu = bn.startGame()
+        self.assertFalse(jeu)
+
+    # Test full GAME
+    def test_FullGame(self):
+        bn = batailleNavale(10, 10)
+        tb1 = bn.createTypeBateau(2, 1, 1)
+        p1 = bn.players[0]
+        p2 = bn.players[1]
+        #p3 = bn.players[2]
+        b1 = p1.createBateau(0, 0, tb1)
+        b2 = p2.createBateau(0, 0, tb1)
+        #b3 = p3.createBateau(0, 0, tb1)
+        jeu = bn.startGame()
+        p1.tirer(1, 0, 0)
+        fire = p1.tirer(1, 1, 0)
+        self.assertEqual(4, fire)
 
 class batailleNavale():
     def __init__(self, x, y):
@@ -161,9 +258,9 @@ class batailleNavale():
         self._typeBateaux = []
         self._x = x
         self._y = y
-        grille = self._createGrille(x,y)
+        grille = self._createGrille(x, y)
         for i in range(0, nbPlayers):
-            self.players.append(player(grille))
+            self.players.append(player(self, grille, i))
 
     # Fonction grille
 
@@ -180,7 +277,7 @@ class batailleNavale():
     def createTypeBateau(self, x, y, nbBateaux):
         if x > self._x or y > self._y or x < 0 or y < 0:
             return None
-        self._typeBateaux.append([x, y, nbBateaux])
+        self._typeBateaux.append([x, y, nbBateaux, x * y])
         for i in range(0, nbPlayers):
             self.players[i].setTypeBateaux(self._typeBateaux)
         # return 1 pour 1 bateau (même si id 0)
@@ -189,9 +286,67 @@ class batailleNavale():
     def typeBateau(self, i):
         return self._typeBateaux[i - 1]
 
+    def _tirer(self, iTx, iRx, x, y):
+        if iTx == iRx or len(self.players) <= iTx or len(self.players) <= iRx:
+            return None
+        if x > len(self.players[iRx]._grille) and y > len(self.players[iRx]._grille[0]):
+            return None
+
+        btTarget = self.players[iRx]._grille[y][x]
+
+        if btTarget > 0:
+            self.players[iRx]._grille[y][x] = 0
+            self.players[iRx]._bateaux[btTarget - 1][3] -= 1
+            nbVieRestante = 0
+            for bateau in self.players[iRx]._bateaux:
+                nbVieRestante += bateau[3]
+            if nbVieRestante == 0:
+                nbPlayerAlive = 0
+                for player in self.players:
+                    nbVieRestante = 0
+                    for bateau in player._bateaux:
+                        nbVieRestante += bateau[3]
+                    if nbVieRestante > 0:
+                        nbPlayerAlive += 1
+                if nbPlayerAlive == 1:
+                    return 4
+                else:
+                    return 3
+            elif self.players[iRx]._bateaux[btTarget - 1][3] > 0:
+                return 1
+            else:
+                return 2
+        else:
+            return 0
+
+    def startGame(self):
+        tblTypeBateaux = [0] * len(self._typeBateaux)
+
+        if len(self.players) < 2:
+            return False
+        else:
+            for bateau in self.players[0]._bateaux:
+                if bateau[2] - 1 >= len(self._typeBateaux):
+                    return False
+                else:
+                    tblTypeBateaux[bateau[2] - 1] += 1
+
+        for player in self.players:
+            tmpTblTypeBateaux = [0] * len(self._typeBateaux)
+            for bateau in player._bateaux:
+                if bateau[2] - 1 >= len(self._typeBateaux):
+                    return False
+                else:
+                    tmpTblTypeBateaux[bateau[2] - 1] += 1
+            if tmpTblTypeBateaux != tblTypeBateaux:
+                return False
+        return True
+
 
 class player():
-    def __init__(self, grille):
+    def __init__(self, bn, grille, i):
+        self._bn = bn
+        self._i = i
         self._grille = grille
         self._bateaux = []
 
@@ -201,15 +356,21 @@ class player():
     def grille(self):
         return self._grille
 
-    def createBateau(self, x, y, z):
-        if (x + self._typeBateaux[z - 1][0
-        ]) > len(self._grille) or (y + self._typeBateaux[z - 1][1]) > len(
+    def createBateau(self, x, y, idType):
+        btx = 0
+        for bateau in self._bateaux:
+            if bateau[2] == idType - 1:
+                btx += 1
+        if btx > self._typeBateaux[idType - 1][2]:
+            return None
+        if (x + self._typeBateaux[idType - 1][0
+        ]) > len(self._grille) or (y + self._typeBateaux[idType - 1][1]) > len(
             self._grille[0]) or x < 0 or y < 0:
             return None
         else:
-            self._bateaux.append([x, y, z])
-            for iy in range(y, y + self._typeBateaux[z - 1][1]):
-                for ix in range(x, x + self._typeBateaux[z - 1][0]):
+            self._bateaux.append([x, y, idType, self._typeBateaux[idType - 1][3]])
+            for iy in range(y, y + self._typeBateaux[idType - 1][1]):
+                for ix in range(x, x + self._typeBateaux[idType - 1][0]):
                     if self._grille[iy][ix] == 0:
                         self._grille[iy][ix] = len(self._bateaux)
                     else:
@@ -218,6 +379,10 @@ class player():
 
     def bateau(self, i):
         return self._bateaux[i - 1]
+
+    def tirer(self, iCible, x, y):
+        return self._bn._tirer(self._i, iCible, x, y)
+
 
 if __name__ == '__main__':
     unittest.main()
