@@ -1,5 +1,5 @@
-from player import player
-from constants import *
+from src.player import player
+from src.constants import *
 
 class batailleNavale():
     def __init__(self, x, y):

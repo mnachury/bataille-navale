@@ -1,6 +1,6 @@
 import unittest
-from batailleNavale import batailleNavale
-from constants import *
+from src.batailleNavale import batailleNavale
+from src.constants import *
 
 class TestBn(unittest.TestCase):
     # Test de base, instanciation classe

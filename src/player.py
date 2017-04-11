@@ -1,4 +1,4 @@
-from constants import *
+from src.constants import *
 
 class player():
     def __init__(self, bn, grille, i):
