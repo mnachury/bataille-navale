@@ -1,3 +1,5 @@
+from constants import *
+
 class player():
     def __init__(self, bn, grille, i):
         self._bn = bn

@@ -1,6 +1,6 @@
 import unittest
-import batailleNavale
-import player
+from batailleNavale import batailleNavale
+from constants import *
 
 class TestBn(unittest.TestCase):
     # Test de base, instanciation classe
@@ -18,27 +18,27 @@ class TestBn(unittest.TestCase):
             for cel in row:
                 self.assertEqual(0, cel)
 
-    # Test grille trop grande (maximum maxX;maxY)
+    # Test grille trop grande (maximum MAXX;MAXY)
     def test_TooBigGrille(self):
         bn = batailleNavale(500, 101)
         grille = bn.players[0].grille()
         self.assertNotEqual(101, len(grille))
-        self.assertEqual(maxY, len(grille))
+        self.assertEqual(MAXY, len(grille))
         for row in grille:
             self.assertNotEqual(500, len(row))
-            self.assertEqual(maxX, len(row))
+            self.assertEqual(MAXX, len(row))
             for cel in row:
                 self.assertEqual(0, cel)
 
-    # Test grille trop petite (minimum minX;minY)
+    # Test grille trop petite (minimum MINX;MINY)
     def test_TooSmallGrille(self):
         bn = batailleNavale(3, 2)
         grille = bn.players[0].grille()
         self.assertNotEqual(2, len(grille))
-        self.assertEqual(minY, len(grille))
+        self.assertEqual(MINY, len(grille))
         for row in grille:
             self.assertNotEqual(3, len(row))
-            self.assertEqual(minX, len(row))
+            self.assertEqual(MINX, len(row))
             for cel in row:
                 self.assertEqual(0, cel)
 
@@ -47,10 +47,10 @@ class TestBn(unittest.TestCase):
         bn = batailleNavale(-30, -12000)
         grille = bn.players[0].grille()
         self.assertNotEqual(-12000, len(grille))
-        self.assertEqual(minY, len(grille))
+        self.assertEqual(MINY, len(grille))
         for row in grille:
             self.assertNotEqual(-30, len(row))
-            self.assertEqual(minX, len(row))
+            self.assertEqual(MINX, len(row))
 
     # Test initialisation type bateau
     def test_CreateTypeBateau(self):

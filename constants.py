@@ -1,0 +1,5 @@
+NBPLAYERS = 2
+MAXX = 99
+MAXY = 99
+MINX = 5
+MINY = 5

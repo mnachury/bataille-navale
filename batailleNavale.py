@@ -1,3 +1,6 @@
+from player import player
+from constants import *
+
 class batailleNavale():
     def __init__(self, x, y):
         self.players = []
@@ -5,17 +8,17 @@ class batailleNavale():
         self._x = x
         self._y = y
         grille = self._createGrille(x, y)
-        for i in range(0, nbPlayers):
+        for i in range(0, NBPLAYERS):
             self.players.append(player(self, grille, i))
 
     # Fonction grille
 
     # Intialise une grille de taille x par y remplie de 0
     def _createGrille(self, x, y):
-        if x > maxX: x = maxX
-        if y > maxY: y = maxY
-        if x < minX: x = minX
-        if y < minY: y = minY
+        if x > MAXX: x = MAXX
+        if y > MAXY: y = MAXY
+        if x < MINX: x = MINX
+        if y < MINY: y = MINY
         return [[0] * x for _ in range(y)]
 
     # Fonction type bateaux
@@ -24,7 +27,7 @@ class batailleNavale():
         if x > self._x or y > self._y or x < 0 or y < 0:
             return None
         self._typeBateaux.append([x, y, nbBateaux, x * y])
-        for i in range(0, nbPlayers):
+        for i in range(0, NBPLAYERS):
             self.players[i].setTypeBateaux(self._typeBateaux)
         # return 1 pour 1 bateau (meme si id 0)
         return len(self._typeBateaux)
