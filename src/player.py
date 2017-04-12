@@ -1,13 +1,13 @@
 from src.constants import *
 
-class player():
+class player(): # idem, les classes commencent par une Majuscule
     def __init__(self, bn, grille, i):
-        self._bn = bn
+        self._bn = bn #idem, utilisez des vrais noms
         self._i = i
         self._grille = grille
         self._bateaux = []
 
-    def setTypeBateaux(self, typeBateaux):
+    def setTypeBateaux(self, typeBateaux): # cette fonction n'est jamais utilisée
         self._typeBateaux = typeBateaux
 
     def grille(self):

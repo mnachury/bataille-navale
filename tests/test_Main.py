@@ -2,6 +2,10 @@ import unittest
 from src.batailleNavale import batailleNavale
 from src.constants import *
 
+# Vos fonctions de tests sont bonnes, mais pourquoi avoir tout fait dans un seul fichier, et surtout dans une seule classe ?
+# En pratique : une classe de test par fonctionnalité
+# En plus, unittest détecte tous vos tests quel que soit le fichier, donc vous n'avez pas l'excuse de "oui mais il faut faire un runner, c'est long" ;)
+
 class TestBn(unittest.TestCase):
     # Test de base, instanciation classe
     def test_bnBase(self):
@@ -51,6 +55,10 @@ class TestBn(unittest.TestCase):
         for row in grille:
             self.assertNotEqual(-30, len(row))
             self.assertEqual(MINX, len(row))
+
+    # Vos tests de grille sont très bien :)
+
+
 
     # Test initialisation type bateau
     def test_CreateTypeBateau(self):
@@ -111,7 +119,7 @@ class TestBn(unittest.TestCase):
                 self.assertEqual(row[j], i)
 
     # Test de postitionnement combine
-    def test_ValidPlaceCombineBateau(self):
+    def test_ValidPlaceCombineBateau(self): # bonne méthode
         bn = batailleNavale(10, 10)
         grilleTest = [
             [0, 1, 1, 1, 0, 2, 2, 0, 0, 3],
@@ -138,7 +146,7 @@ class TestBn(unittest.TestCase):
         bn.players[0].createBateau(6, 8, tb4)
         bn.players[0].createBateau(2, 4, tb3)
         grille = bn.players[0].grille()
-        self.assertEqual(grille, grilleTest)
+        self.assertEqual(grille, grilleTest) 
 
     # Test de chevauchement bateaux
     def test_OverlapPlaceBateaux(self):
@@ -179,7 +187,7 @@ class TestBn(unittest.TestCase):
     #     for name in ['b4', 'b5', 'b6']:
     #         self.assertIsNone(name)
 
-    # Test tir a la Kim Jong Un
+    # Test tir a la Kim Jong Un         # j'ai ri => +8 points à votre moyenne
     def test_FireEnemy(self):
         bn = batailleNavale(10, 10)
         b1 = bn.createTypeBateau(3, 3, 1)
@@ -246,3 +254,5 @@ class TestBn(unittest.TestCase):
         p1.tirer(1, 0, 0)
         fire = p1.tirer(1, 1, 0)
         self.assertEqual(4, fire)
+
+# vos tests sont bons et exhaustifs, en pratique c'est ce que j'attends d'un lot de tests (à ceci près qu'il faut les séparer en classes)
