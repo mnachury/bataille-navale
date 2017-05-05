@@ -3,7 +3,6 @@ python:
         - "3.5"
 script:
         - python -m unittest discover -s tests -v
-        - pip install coverage
-        - coverage run tests/*.py 
+        - pip install coverage 
         - pip install codecov
         - codecov -t ec9b08c3-9fa4-4daa-b285-b1cfc963986d

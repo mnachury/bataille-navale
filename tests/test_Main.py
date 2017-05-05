@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import unittest
 from src.batailleNavale import batailleNavale
 from src.constants import *
